@@ -10,7 +10,9 @@ const config = {
     "host": process.env.DB_HOST,
     "db_port": process.env.DB_PORT??3306,
     "dialect": process.env.DIALECT,
-    "port_no": process.env.PORT
+    "port_no": process.env.PORT || 8080,
+    "jwt_secret_key": process.env.JWT_SECRET_KEY,
+    "jwt_expiration_time": process.env.JWT_EXPIRATION_TIME
   },
   "test": {
     "username": process.env.DB_USERNAME,
@@ -19,7 +21,9 @@ const config = {
     "host": process.env.DB_HOST,
     "db_port": process.env.DB_PORT??3306,
     "dialect": process.env.DIALECT,
-    "port_no": process.env.PORT
+    "port_no": process.env.PORT || 8080,
+    "jwt_secret_key": process.env.JWT_SECRET_KEY,
+    "jwt_expiration_time": process.env.JWT_EXPIRATION_TIME
   },
   "production": {
     "username": process.env.DB_USERNAME,
@@ -28,7 +32,9 @@ const config = {
     "host": process.env.DB_HOST,
     "db_port": process.env.DB_PORT??3306,
     "dialect": process.env.DIALECT,
-    "port_no": process.env.PORT
+    "port_no": process.env.PORT || 8080,
+    "jwt_secret_key": process.env.JWT_SECRET_KEY,
+    "jwt_expiration_time": process.env.JWT_EXPIRATION_TIME
   }
 }
 

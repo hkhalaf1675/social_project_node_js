@@ -44,6 +44,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: true
       },
+      bio: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       roleId: {
         type: Sequelize.INTEGER,
         references: {
