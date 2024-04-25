@@ -1,0 +1,67 @@
+'use strict';
+const bcrypt = require("bcrypt");
+
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {
+
+    static associate(models) {
+        User.belongsTo(models.Role, { foreignKey: 'roleId', as: 'role' });
+    }
+
+  }
+  User.init({
+    username: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    firstName: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    lastName: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    profilePicture: {
+        type: DataTypes.BLOB,
+        allowNull: true
+    },
+    password: {
+      type: DataTypes.STRING,
+      set(value) {
+        if (value) {
+          const salt = bcrypt.genSaltSync(10);
+          const hash = bcrypt.hashSync(value, salt);
+          this.setDataValue('password', hash);
+        }
+      }
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    },
+    roleId: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    lastLogin: {
+        type: DataTypes.DATE,
+        allowNull: true
+    }
+  }, {
+    defaultScope: {
+      attributes: { exclude: ['password'] },
+    },
+    sequelize,
+    modelName: 'User',
+  });
+
+  return User;
+};
