@@ -133,3 +133,5 @@ dist
 /.vs/slnx.sqlite
 *.code-workspace
 .vs/
+
+uploads/

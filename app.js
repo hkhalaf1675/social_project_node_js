@@ -20,6 +20,7 @@ app.all('*', (req, res, next) => {
 // global error handling middleware
 app.use(globalErrorHandler);
 
+
 app.listen(config.port_no, () => {
     console.log(`App listening on PORT ${config.port_no}`);
 });

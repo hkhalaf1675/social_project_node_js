@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const ResponseSchema = require('../schemes/ResponseSchema');
 const { createJwtToken } = require("./jwtServices");
 const bcrypt = require('bcrypt');
+const { now } = require("sequelize/lib/utils");
 
 exports.register = async(firstName, lastName, username, email, phoneNumber, bio, password) => {
     try {
@@ -33,7 +34,7 @@ exports.register = async(firstName, lastName, username, email, phoneNumber, bio,
         user = user.toJSON();
         delete user.password;
 
-        return new ResponseSchema(200, 'user add successfully', {user, token});
+        return new ResponseSchema(200, 'user added successfully', {user, token});
     } catch (error) {
         console.log(error);
         return new ResponseSchema(500, 'there is an error in saving data', null);
@@ -65,6 +66,10 @@ exports.login = async(email, password) => {
 
         const token = await createJwtToken(user, role.name);
 
+        await user.update({
+            lastLogin: Date.now()
+        });
+
         user = user.toJSON();
         delete user.password;
 
@@ -72,6 +77,6 @@ exports.login = async(email, password) => {
 
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an internal error ', null);
     }
 }
