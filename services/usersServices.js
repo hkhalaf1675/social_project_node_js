@@ -1,5 +1,5 @@
 const { User,Role } = require("../models");
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
 const ResponseSchema = require('../schemes/ResponseSchema');
 
 exports.create = async(role, firstName, lastName, username, email, phoneNumber, isActive, bio, password) => {

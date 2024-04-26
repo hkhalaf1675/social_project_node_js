@@ -36,6 +36,12 @@ router.get('/',
     usersMiddleware.get
 );
 
+router.delete('/:id/delete',
+    adminAuth,
+    validation({id: 'required|exist:User'}, true),
+    usersMiddleware.remove
+);
+
 const upload = multer({dest: 'uploads/'});
 router.put('/:id/change-profile-picture', 
     userAuth,

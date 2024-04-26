@@ -148,3 +148,16 @@ exports.changeProfilePicture = async(req, res) => {
     return res.status(200).json({success: true, message: 'picture uploaded successfully', data: user});
 
 }
+
+exports.remove = async(req, res) => {
+    const id = req.params.id;
+
+    const response = await usersServices.remove(id);
+
+    return res.status(response.code)
+    .json({ 
+            success: (response.code != 200 && response.code != 201) ? false : true, 
+            "message":response.message, 
+            "data": response.data 
+        });
+}
