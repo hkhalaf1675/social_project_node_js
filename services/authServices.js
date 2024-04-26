@@ -3,7 +3,6 @@ const { Op } = require("sequelize");
 const ResponseSchema = require('../schemes/ResponseSchema');
 const { createJwtToken } = require("./jwtServices");
 const bcrypt = require('bcrypt');
-const { now } = require("sequelize/lib/utils");
 
 exports.register = async(firstName, lastName, username, email, phoneNumber, bio, password) => {
     try {
@@ -28,13 +27,11 @@ exports.register = async(firstName, lastName, username, email, phoneNumber, bio,
             bio,
             roleId:userRole[0].id,
         });
-
-        const token = createJwtToken(user, 'user');
         
         user = user.toJSON();
         delete user.password;
 
-        return new ResponseSchema(200, 'user added successfully', {user, token});
+        return new ResponseSchema(200, 'user added successfully', user);
     } catch (error) {
         console.log(error);
         return new ResponseSchema(500, 'there is an error in saving data', null);
