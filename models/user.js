@@ -6,7 +6,19 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
 
     static associate(models) {
-        User.belongsTo(models.Role, { foreignKey: 'roleId', as: 'role' });
+        User.belongsTo(models.Role, 
+          { 
+            foreignKey: 'roleId', 
+            as: 'role' 
+          }
+        );
+
+        User.hasMany(models.Post, 
+          {
+            foreignKey: 'userId',
+            as: 'user'
+          }
+        );
     }
 
   }
