@@ -82,13 +82,12 @@ const validate = async (data,validationRules,language) =>{
             'message.required': 'Please type your message!',
             'email.unique': 'This email has already been registered! Please enter another email!',
             'email.email': 'Please add the \'@\' sign to your email!',
-            'exist': 'Not found!',
+            'exist': 'The :attribute Not found!',
             'password.complex': 'The password is weak!',
             'date': 'The date must be a valid date!',
             'existsArray': 'Please add array of ' + ':arg0' + 's ids that exists',
-            'date': 'The date must be a valid date!',
-            'enum': 'the value must be one of { :args }',
-            'enumArray': 'the input must be array and the items of it must be one of { :args }',
+            'enum': 'the value of :attribute must be one of { :args }',
+            'enumArray': 'the value of :attribute must be array and the items of it must be one of { :args }',
         }, 'en');
 
     const v = new niv.Validator(data, validationRules);
