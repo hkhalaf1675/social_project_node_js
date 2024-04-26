@@ -1,5 +1,7 @@
 const express = require("express");
 const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const { validation } = require("../../../services/validation");
 const { adminAuth, userAuth } = require("../../../middlewares/checkAuth");
 const usersMiddleware = require('../../../middlewares/usersMiddleware');
@@ -42,7 +44,22 @@ router.delete('/:id/delete',
     usersMiddleware.remove
 );
 
-const upload = multer({dest: 'uploads/'});
+const destinationDir = path.join(__dirname, "../../../images");
+if(!fs.existsSync(destinationDir)){
+    fs.mkdirSync(destinationDir);
+}
+
+const storage = multer.diskStorage({
+    destination: function (req, file, callback){
+        callback(null, destinationDir);
+    },
+
+    filename: function(req, file, callback){
+        callback(null, new Date().toISOString().replace(/:/g, '_') + '_' + file.originalname);
+    }
+});
+
+const upload = multer({ storage });
 router.put('/:id/change-profile-picture', 
     userAuth,
     validation({id: 'required|exist:User'}, true),

@@ -13,6 +13,10 @@ async function checkAuth(roleNames, token){
 
         const decoded = decode(token);
 
+        if(!decoded){
+            return new ResponseSchema(401, 'Unauthorized!', null);
+        }
+
         const user = await User.findOne({where: {
             email: decoded.user.email
         }});
@@ -34,7 +38,7 @@ async function checkAuth(roleNames, token){
         }
 
         if(roles.some(r => r.id == user.roleId)){
-            return new ResponseSchema(200, 'authorized user', null);
+            return new ResponseSchema(200, 'authorized user', user);
         }
         else{
             return new ResponseSchema(401, 'Unauthorized!', null);
@@ -51,6 +55,7 @@ exports.adminAuth = async(req, res, next) => {
     const response = await checkAuth(['admin'], token);
 
     if(response.code == 200){
+        req.user = response.data;
         next();
     }
     else{
@@ -64,6 +69,7 @@ exports.userAuth = async(req, res, next) => {
     const response = await checkAuth(['user', 'admin'], token);
 
     if(response.code == 200){
+        req.user = response.data;
         next();
     }
     else{

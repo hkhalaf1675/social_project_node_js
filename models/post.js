@@ -6,10 +6,16 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Post.belongsTo(models.User, {
-        foreignKey: 'userId'
+        foreignKey: 'userId',
+        as: 'user'
       });
       Post.belongsTo(models.Category, {
-        foreignKey: 'categoryId'
+        foreignKey: 'categoryId',
+        as: 'category'
+      });
+      Post.hasMany(models.Rating, {
+        foreignKey: 'postId',
+        as: 'ratings'
       });
     }
   }
@@ -26,6 +32,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BLOB,
         allowNull: true
     },
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Post',

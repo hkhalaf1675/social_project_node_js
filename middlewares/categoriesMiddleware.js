@@ -79,8 +79,7 @@ exports.get = async(req, res) => {
 
     const options = {
         page,
-        perPage,
-        lists: 'categories'
+        perPage
     };
 
     const response = await pagination(Category, options, query);

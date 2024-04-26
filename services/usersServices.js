@@ -13,7 +13,7 @@ exports.create = async(role, firstName, lastName, username, email, phoneNumber, 
             defaults: { name: role, token: role.replace(/ /g, "_"), default: true}
          });
 
-         const user = await User.create({
+         let user = await User.create({
             firstName,
             lastName,
             username,
@@ -25,6 +25,9 @@ exports.create = async(role, firstName, lastName, username, email, phoneNumber, 
             roleId:userRole[0].id,
          });
 
+         user = user.toJSON();
+         delete user.password;
+
          return new ResponseSchema(201, 'user added successfully', user);
     } catch (error) {
         console.log(error);
@@ -32,9 +35,19 @@ exports.create = async(role, firstName, lastName, username, email, phoneNumber, 
     }
 }
 
-exports.update = async(id, email, username, firstName, lastName, password, bio, phoneNumber) => {
+exports.update = async(currentUserId, id, email, username, firstName, lastName, password, bio, phoneNumber) => {
     try {
         const user = await User.findByPk(id);
+        const currentUser = await User.findByPk(currentUserId);
+        if(!currentUser){
+            return new ResponseSchema(401, 'Unauthorized user', null);
+        }
+
+        const role = await Role.findByPk(currentUser.roleId);
+
+        if(currentUser.id != id && role.name != 'admin'){
+            return new ResponseSchema(400, 'that user can not update that account', null);
+        }
 
         if(email){
             const oldUser = await User.findOne({

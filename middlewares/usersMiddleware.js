@@ -29,8 +29,10 @@ exports.create = async(req, res) => {
 exports.update = async(req, res) => {
     const { username,email, password, firstName, lastName, phoneNumber, bio} = req.body;
     const id = req.params.id;
+    const currentUserId = req.user.id;
 
     const response = await usersServices.update(
+        currentUserId,
         id,
         email,
         username,
@@ -115,6 +117,7 @@ exports.get = async(req, res) => {
             {
                 model: Role,
                 association: 'role',
+                attributes: ['name'],
                 where: (role) ? {name: {[Op.substring]: [role]}} : {}
             }
         ]
@@ -122,8 +125,7 @@ exports.get = async(req, res) => {
 
     const options = {
         page,
-        perPage,
-        lists: 'users'
+        perPage
     };
 
     const response = await pagination(User, options, query);
@@ -134,6 +136,18 @@ exports.get = async(req, res) => {
 exports.changeProfilePicture = async(req, res) => {
     const fileData = req.file;
     const id = req.params.id;
+    const currentUserId = req.user.id;
+
+    const currentUser = await User.findByPk(currentUserId);
+    if(!currentUser){
+        return res.status(401).json({success: false, message: 'Unauthorized user'});
+    }
+
+    const role = await Role.findByPk(currentUser.roleId);
+
+    if(currentUser.id != id && role.name != 'admin'){
+        return res.status(401).json({success: false, message: 'that user can not update that account'});
+    }
 
     if(!fileData){
         return res.status(400).json({success: false, message: 'Please upload the picture'});
@@ -142,7 +156,7 @@ exports.changeProfilePicture = async(req, res) => {
     const user = await User.findByPk(id);
 
     await user.update({
-        profilePicture : fileData
+        profilePicture : fileData.buffer
     });
 
     return res.status(200).json({success: true, message: 'picture uploaded successfully', data: user});

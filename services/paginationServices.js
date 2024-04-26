@@ -1,6 +1,6 @@
 
 const pagination = async (Model,
-    { page, perPage, lists, dataLimit },
+    { page, perPage, dataLimit },
     query, _data, _count) => {
     let data, rows, totalItems, totalPages;
     if (Model) {
@@ -16,7 +16,6 @@ const pagination = async (Model,
             console.log(error);
             return { success: false, "errors": ["something went wrong"] };
         });
-
         rows = data.rows;
         totalItems = data.count.length ? data.count.length : data.count ?? 0;
         totalPages = Math.ceil(totalItems / limit);
@@ -32,7 +31,7 @@ const pagination = async (Model,
     const pageInfo = { totalItems, totalPages, currentPage };
     const response = {};
     response['pageInfo'] = pageInfo;
-    response[lists] = rows ?? [];
+    response['data'] = rows ?? [];
     response['success'] = true;
     return response;
 };
