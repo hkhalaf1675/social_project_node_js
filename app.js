@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const config = require('./config/config');
 const { globalErrorHandler } = require('./middlewares/errorHandlerMiddleware');
 const ErrorSchema = require('./schemes/ErrorSchema');
+const cors = require("cors");
 
 app.use(bodyParser.urlencoded({ extended: true, limit: "500mb" }));
 app.use(bodyParser.json({ limit: "500mb" }));
@@ -20,6 +21,11 @@ app.all('*', (req, res, next) => {
 // global error handling middleware
 app.use(globalErrorHandler);
 
+const corsOptions = {
+    origin: `*`,
+    optionsSuccessStatus: 200, // For legacy browser support
+};
+app.use(cors(corsOptions));
 
 app.listen(config.port_no, () => {
     console.log(`App listening on PORT ${config.port_no}`);
