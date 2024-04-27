@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Post, User, Category, Rating, Comment, Section } = require("../models");
+const { Post, User, Category, Rating, Comment, Section, SavedPost } = require("../models");
 const { pagination } = require("../services/paginationServices");
 const postsServices = require("../services/postsServices");
 
@@ -98,6 +98,13 @@ exports.get = async(req, res) => {
         }
     }
 
+    let sectionFilter = {};
+    if(section){
+        sectionFilter['name']= {
+            [Op.substring]: section
+        }
+    }
+
     const query = {
         order: [
             ['createdAt', 'DESC']
@@ -117,7 +124,7 @@ exports.get = async(req, res) => {
                     {
                         model: Section,
                         as: 'section',
-                        where: (section) ? {name: {[Op.substring]: section}} : {}
+                        where: sectionFilter
                     }
                 ]
             },
@@ -204,4 +211,76 @@ exports.disLikePost = async(req, res) => {
             "message":response.message, 
             "data": response.data 
         });
+}
+
+exports.savePost = async(req, res) => {
+    const postId = req.params.postId;
+    const userId = req.user.id;
+
+    const response = await postsServices.savePost(postId, userId);
+
+    return res.status(response.code)
+    .json({ 
+            success: (response.code != 200 && response.code != 201) ? false : true, 
+            "message":response.message, 
+            "data": response.data 
+        });
+}
+
+exports.removePostFromSaved = async(req, res) => {
+    const postId = req.params.postId;
+    const userId = req.user.id;
+
+    const response = await postsServices.removePostFromSaved(postId, userId);
+
+    return res.status(response.code)
+    .json({ 
+            success: (response.code != 200 && response.code != 201) ? false : true, 
+            "message":response.message, 
+            "data": response.data 
+        });
+}
+
+exports.getCurrentUserSavedPosts = async(req, res) => {
+    const { page, perPage } = req.query;
+    const userId = req.user.id;
+
+    let filter = {};
+    filter['userId'] = userId;
+
+    const query = {
+        order: [
+            ['createdAt', 'DESC']
+        ],
+        where: filter,
+        include: [
+            {
+                model: Post,
+                as: 'post',
+                include: [
+                    {
+                        model: Category,
+                        association: 'category'
+                    },
+                    {
+                        model: Rating,
+                        association: 'ratings'
+                    },
+                    {
+                        model: Comment,
+                        association: 'comments'
+                    }
+                ]
+            }
+        ]
+    };
+
+    const options = {
+        page,
+        perPage
+    };
+
+    const response = await pagination(SavedPost, options, query);
+
+    return res.status(200).json(response);
 }

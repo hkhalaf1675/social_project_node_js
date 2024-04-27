@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'postId',
         as: 'comments'
       });
+
+      Post.hasMany(models.SavedPost, {
+        foreignKey: 'postId',
+        as: 'savedPosts'
+      });
     }
   }
   Post.init({

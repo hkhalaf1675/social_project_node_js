@@ -57,4 +57,21 @@ router.post('/dislike-post/:postId',
     postsMiddleware.disLikePost
 );
 
+router.post('/save-post/:postId',
+    userAuth,
+    validation({postId: 'required|exist:Post'}, true),
+    postsMiddleware.savePost
+);
+
+router.delete('/unsave-post/:postId',
+    userAuth,
+    validation({postId: 'required|exist:Post'}, true),
+    postsMiddleware.removePostFromSaved
+);
+
+router.get('/saved-posts',
+    userAuth,
+    postsMiddleware.getCurrentUserSavedPosts
+);
+
 module.exports = router;
