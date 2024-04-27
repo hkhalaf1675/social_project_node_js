@@ -5,7 +5,7 @@ const postsServices = require("../services/postsServices");
 
 exports.create = async(req, res) => {
     const { title, description, categoryId, image } = req.body;
-    const userId = req.user.id;
+    const userId = 3
 
     const response = await postsServices.create(
         title, 
