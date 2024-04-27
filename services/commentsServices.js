@@ -12,7 +12,7 @@ exports.create = async(userId, postId, comment_text) => {
          return new ResponseSchema(201, 'comment post successfully', comment);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -38,7 +38,7 @@ exports.update = async(id, userId, comment_text) => {
         return new ResponseSchema(200, 'comment updated successfully', comment);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -62,6 +62,6 @@ exports.remove = async(id, userId) => {
         return new ResponseSchema(200, 'comment deleted successfully', null);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }

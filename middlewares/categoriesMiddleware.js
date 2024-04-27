@@ -64,13 +64,16 @@ exports.get = async(req, res) => {
             [Op.substring]: name
         };
     }
-
-    let sectionFilter = {};
     if(section){
-        sectionFilter['name']= {
-            [Op.substring]: section
-        }
+        filter['sectionId'] = section;
     }
+
+    // let sectionFilter = {};
+    // if(section){
+    //     sectionFilter['name']= {
+    //         [Op.substring]: section
+    //     }
+    // }
 
     const query = {
         order: [
@@ -80,8 +83,7 @@ exports.get = async(req, res) => {
         include: [
             {
                 model: Section,
-                as: 'section',
-                where: sectionFilter
+                as: 'section'
             }
         ]
     };

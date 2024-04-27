@@ -34,7 +34,7 @@ exports.register = async(firstName, lastName, username, email, phoneNumber, bio,
         return new ResponseSchema(200, 'user added successfully', user);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -74,6 +74,6 @@ exports.login = async(email, password) => {
 
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an internal error ', null);
+        return new ResponseSchema(500, 'there is an error in input data ', null);
     }
 }

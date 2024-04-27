@@ -52,11 +52,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     phoneNumber: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
     },
     profilePicture: {
-        type: DataTypes.BLOB,
+        type: DataTypes.STRING,
         allowNull: true
     },
     password: {

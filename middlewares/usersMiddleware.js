@@ -4,7 +4,7 @@ const { pagination } = require("../services/paginationServices");
 const usersServices = require("../services/usersServices");
 
 exports.create = async(req, res) => {
-    const { username,email, password, firstName, lastName, phoneNumber, bio, role, isActive } = req.body;
+    const { username,email, password, firstName, lastName, phoneNumber, bio, role, isActive, profilePicture } = req.body;
 
     const response = await usersServices.create(
         role, 
@@ -15,7 +15,8 @@ exports.create = async(req, res) => {
         phoneNumber,
         isActive,
         bio,
-        password
+        password,
+        profilePicture
     );
 
     return res.status(response.code)
@@ -27,7 +28,7 @@ exports.create = async(req, res) => {
 }
 
 exports.update = async(req, res) => {
-    const { username,email, password, firstName, lastName, phoneNumber, bio} = req.body;
+    const { username,email, password, firstName, lastName, phoneNumber, bio, profilePicture} = req.body;
     const id = req.params.id;
     const currentUserId = req.user.id;
 
@@ -40,7 +41,8 @@ exports.update = async(req, res) => {
         lastName,
         password,
         bio,
-        phoneNumber
+        phoneNumber,
+        profilePicture
     );
 
     return res.status(response.code)
@@ -68,6 +70,19 @@ exports.blockUser = async(req, res) => {
     const id = req.params.id;
 
     const response = await usersServices.blockUser(id);
+
+    return res.status(response.code)
+    .json({ 
+            success: (response.code != 200 && response.code != 201) ? false : true, 
+            "message":response.message, 
+            "data": response.data 
+        });
+}
+
+exports.toggleActivation = async(req, res) => {
+    const id = req.params.id;
+
+    const response = await usersServices.toggleActivation(id);
 
     return res.status(response.code)
     .json({ 

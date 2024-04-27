@@ -15,11 +15,11 @@ exports.create = async(title, description, image, userId, categoryId) => {
          return new ResponseSchema(201, 'user post successfully', post);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
-exports.update = async(id, userId, title, description, categoryId) => {
+exports.update = async(id, userId, title, description, categoryId, image) => {
     try {
         const post = await Post.findByPk(id);
 
@@ -37,13 +37,14 @@ exports.update = async(id, userId, title, description, categoryId) => {
         await post.update({
             title,
             description,
-            categoryId
+            categoryId,
+            image
         });
 
         return new ResponseSchema(200, 'post updated successfully', post);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -67,7 +68,7 @@ exports.remove = async(id, userId) => {
         return new ResponseSchema(200, 'post deleted successfully', null);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -91,7 +92,7 @@ exports.likePost = async(postId) => {
         return new ResponseSchema(200, 'post liked successfully', null);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -115,7 +116,7 @@ exports.disLikePost = async(postId) => {
         return new ResponseSchema(200, 'post disliked successfully', null);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -134,7 +135,7 @@ exports.savePost = async(postId, userId) => {
         return new ResponseSchema(200, 'post saved successfully', savedPost);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -158,6 +159,6 @@ exports.removePostFromSaved = async(postId, userId) => {
 
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }

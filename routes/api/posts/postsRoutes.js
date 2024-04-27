@@ -1,25 +1,26 @@
 const express = require("express");
-const multer = require('multer');
 const { validation } = require("../../../services/validation");
 const { userAuth } = require("../../../middlewares/checkAuth");
 const postsMiddleware = require('../../../middlewares/postsMiddleware');
 const router = express.Router();
 
-const storage = multer.diskStorage({
-    destination: function (req, file, callback){
-        callback(null, destinationDir);
-    },
+// const multer = require('multer');
+// const storage = multer.diskStorage({
+//     destination: function (req, file, callback){
+//         callback(null, destinationDir);
+//     },
 
-    filename: function(req, file, callback){
-        callback(null, new Date().toISOString().replace(/:/g, '_') + '_' + file.originalname);
-    }
-});
+//     filename: function(req, file, callback){
+//         callback(null, new Date().toISOString().replace(/:/g, '_') + '_' + file.originalname);
+//     }
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
+
 router.post('/create',
     userAuth,
-    validation({title:'required', description: 'required', categoryId: 'required|exist:Category'}),
-    upload.single('image'),
+    validation({title:'required', description: 'required', categoryId: 'required|exist:Category', image: 'required'}),
+    // upload.single('image'),
     postsMiddleware.create
 );
 

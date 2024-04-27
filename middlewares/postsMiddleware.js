@@ -4,13 +4,8 @@ const { pagination } = require("../services/paginationServices");
 const postsServices = require("../services/postsServices");
 
 exports.create = async(req, res) => {
-    const { title, description, categoryId } = req.body;
-    let image = req.file;
+    const { title, description, categoryId, image } = req.body;
     const userId = req.user.id;
-
-    if(image){
-        image = image.buffer;
-    }
 
     const response = await postsServices.create(
         title, 
@@ -29,7 +24,7 @@ exports.create = async(req, res) => {
 }
 
 exports.update = async(req, res) => {
-    const { title, description, categoryId } = req.body;
+    const { title, description, categoryId, image } = req.body;
     const id = req.params.id;
     const userId = req.user.id;
 
@@ -38,7 +33,8 @@ exports.update = async(req, res) => {
         userId,
         title, 
         description,
-        categoryId
+        categoryId,
+        image
     );
 
     return res.status(response.code)

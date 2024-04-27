@@ -2,7 +2,7 @@ const { User,Role } = require("../models");
 const { Op } = require("sequelize");
 const ResponseSchema = require('../schemes/ResponseSchema');
 
-exports.create = async(role, firstName, lastName, username, email, phoneNumber, isActive, bio, password) => {
+exports.create = async(role, firstName, lastName, username, email, phoneNumber, isActive, bio, password, profilePicture) => {
     try {
         const userRole = await Role.findOrCreate({ 
             where: {
@@ -23,6 +23,7 @@ exports.create = async(role, firstName, lastName, username, email, phoneNumber, 
             password,
             bio,
             roleId:userRole[0].id,
+            profilePicture
          });
 
          user = user.toJSON();
@@ -31,11 +32,11 @@ exports.create = async(role, firstName, lastName, username, email, phoneNumber, 
          return new ResponseSchema(201, 'user added successfully', user);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
-exports.update = async(currentUserId, id, email, username, firstName, lastName, password, bio, phoneNumber) => {
+exports.update = async(currentUserId, id, email, username, firstName, lastName, password, bio, phoneNumber, profilePicture) => {
     try {
         const user = await User.findByPk(id);
         const currentUser = await User.findByPk(currentUserId);
@@ -80,13 +81,14 @@ exports.update = async(currentUserId, id, email, username, firstName, lastName, 
             email,
             password,
             bio,
-            phoneNumber
+            phoneNumber,
+            profilePicture
         });
 
         return new ResponseSchema(200, 'user updated successfully', user);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -101,7 +103,7 @@ exports.activateUser = async(id) => {
         return new ResponseSchema(200, 'user updated successfully', user);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -116,7 +118,22 @@ exports.blockUser = async(id) => {
         return new ResponseSchema(200, 'user updated successfully', user);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
+    }
+}
+
+exports.toggleActivation = async(id) => {
+    try {
+        const user = await User.findByPk(id);
+
+        await user.update({
+            isActive: !user.isActive
+        });
+
+        return new ResponseSchema(200, 'user updated successfully', user);
+    } catch (error) {
+        console.log(error);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -131,6 +148,6 @@ exports.remove = async(id) => {
         return new ResponseSchema(200, 'user deleted successfully', null);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }

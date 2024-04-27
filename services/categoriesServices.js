@@ -12,7 +12,7 @@ exports.create = async(name, description, sectionId) => {
          return new ResponseSchema(201, 'user category successfully', category);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -29,7 +29,7 @@ exports.update = async(id, name, description, sectionId) => {
         return new ResponseSchema(200, 'category updated successfully', category);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }
 
@@ -44,6 +44,6 @@ exports.remove = async(id) => {
         return new ResponseSchema(200, 'Category deleted successfully', null);
     } catch (error) {
         console.log(error);
-        return new ResponseSchema(500, 'there is an error in saving data', null);
+        return new ResponseSchema(500, 'there is an error in input data', null);
     }
 }

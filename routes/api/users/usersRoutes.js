@@ -9,13 +9,13 @@ const router = express.Router();
 
 router.post('/create',
     adminAuth,
-    validation({username:'required',password:'required|complex',email:'required|email|unique:User,email', firstName: 'required', lastName: 'required', phoneNumber: 'required|unique:User,phoneNumber', role: 'required|enum:admin,user', isActive: 'required|boolean'}),
+    validation({username:'required',password:'required',email:'required|email|unique:User,email', firstName: 'required', lastName: 'required', phoneNumber: 'unique:User,phoneNumber', role: 'required|enum:admin,user', isActive: 'required|boolean'}),
     usersMiddleware.create
 );
 
 router.put('/update/:id',
     userAuth,
-    validation({password:'complex',email:'email'}),
+    validation({email:'email'}),
     validation({id: 'required|exist:User'}, true),
     usersMiddleware.update
 );
@@ -30,6 +30,12 @@ router.put('/block/:id',
     adminAuth,
     validation({id: 'required|exist:User'}, true),
     usersMiddleware.blockUser
+);
+
+router.put('/toggle-activation/:id',
+    adminAuth,
+    validation({id: 'required|exist:User'}, true),
+    usersMiddleware.toggleActivation
 );
 
 router.get('/',
