@@ -29,11 +29,11 @@ module.exports = {
       },
       phoneNumber: {
           type: Sequelize.STRING,
-          allowNull: false,
+          allowNull: true,
           unique: true
       },
       profilePicture: {
-          type: Sequelize.BLOB,
+          type: Sequelize.TEXT,
           allowNull: true
       },
       password: {

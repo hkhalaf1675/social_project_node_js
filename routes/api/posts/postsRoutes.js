@@ -18,7 +18,7 @@ const router = express.Router();
 // const upload = multer({ storage });
 
 router.post('/create',
-    // userAuth,
+    userAuth,
     validation({title:'required', description: 'required', categoryId: 'required|exist:Category', image: 'required'}),
     // upload.single('image'),
     postsMiddleware.create
