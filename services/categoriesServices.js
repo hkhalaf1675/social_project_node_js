@@ -1,12 +1,12 @@
 const { Category } = require("../models");
 const ResponseSchema = require('../schemes/ResponseSchema');
 
-exports.create = async(name, description, section) => {
+exports.create = async(name, description, sectionId) => {
     try {
          const category = await Category.create({
             name,
             description,
-            section
+            sectionId
          });
 
          return new ResponseSchema(201, 'user category successfully', category);
@@ -16,14 +16,14 @@ exports.create = async(name, description, section) => {
     }
 }
 
-exports.update = async(id, name, description, section) => {
+exports.update = async(id, name, description, sectionId) => {
     try {
         const category = await Category.findByPk(id);
 
         await category.update({
             name,
             description,
-            section
+            sectionId
         });
 
         return new ResponseSchema(200, 'category updated successfully', category);

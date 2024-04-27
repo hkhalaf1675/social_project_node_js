@@ -23,14 +23,14 @@ router.post('/create',
     postsMiddleware.create
 );
 
-router.put('/:id/update',
+router.put('/update/:id',
     userAuth,
     validation({categoryId: 'exist:Category'}),
     validation({id: 'required|exist:Post'}, true),
     postsMiddleware.update
 );
 
-router.delete('/:id/delete',
+router.delete('/delete/:id',
     userAuth,
     validation({id: 'required|exist:Post'}, true),
     postsMiddleware.remove
@@ -40,9 +40,21 @@ router.get('/',
     postsMiddleware.get
 );
 
-router.get('/:userId',
-    validation({userId: 'required|exist:User'}, true),
-    postsMiddleware.get
+router.get('/current-user',
+    userAuth,
+    postsMiddleware.getCurrentUserPosts
+);
+
+router.post('/like-post/:postId',
+    userAuth,
+    validation({postId: 'required|exist:Post'}, true),
+    postsMiddleware.likePost
+);
+
+router.post('/dislike-post/:postId',
+    userAuth,
+    validation({postId: 'required|exist:Post'}, true),
+    postsMiddleware.disLikePost
 );
 
 module.exports = router;

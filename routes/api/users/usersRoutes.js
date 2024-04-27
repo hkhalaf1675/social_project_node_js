@@ -13,20 +13,20 @@ router.post('/create',
     usersMiddleware.create
 );
 
-router.put('/:id/update',
+router.put('/update/:id',
     userAuth,
     validation({password:'complex',email:'email'}),
     validation({id: 'required|exist:User'}, true),
     usersMiddleware.update
 );
 
-router.put('/:id/activate',
+router.put('/activate/:id',
     adminAuth,
     validation({id: 'required|exist:User'}, true),
     usersMiddleware.activateUser
 );
 
-router.put('/:id/block',
+router.put('/block/:id',
     adminAuth,
     validation({id: 'required|exist:User'}, true),
     usersMiddleware.blockUser
@@ -38,7 +38,7 @@ router.get('/',
     usersMiddleware.get
 );
 
-router.delete('/:id/delete',
+router.delete('/delete/:id',
     adminAuth,
     validation({id: 'required|exist:User'}, true),
     usersMiddleware.remove
@@ -60,7 +60,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-router.put('/:id/change-profile-picture', 
+router.put('/change-profile-picture/:id', 
     userAuth,
     validation({id: 'required|exist:User'}, true),
     upload.single('profilePicture'),

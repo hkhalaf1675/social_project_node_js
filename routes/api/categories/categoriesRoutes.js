@@ -4,27 +4,27 @@ const { adminAuth, userAuth } = require("../../../middlewares/checkAuth");
 const categoriesMiddleware = require('../../../middlewares/categoriesMiddleware');
 const router = express.Router();
 
+// enum:Movies,Tv shows,Video games,Books
 router.post('/create',
     adminAuth,
-    validation({name:'required', section: 'required|enum:Movies,Tv shows,Video games,Books'}),
+    validation({name:'required', sectionId: 'required|exist:Section'}),
     categoriesMiddleware.create
 );
 
-router.put('/:id/update',
+router.put('/update/:id',
     adminAuth,
-    validation({section: 'enum:Movies,Tv shows,Video games,Books'}),
+    validation({sectionId: 'exist:Section'}),
     validation({id: 'required|exist:Category'}, true),
     categoriesMiddleware.update
 );
 
-router.delete('/:id/delete',
+router.delete('/delete/:id',
     adminAuth,
     validation({id: 'required|exist:Category'}, true),
     categoriesMiddleware.remove
 );
 
 router.get('/',
-    userAuth,
     categoriesMiddleware.get
 );
 

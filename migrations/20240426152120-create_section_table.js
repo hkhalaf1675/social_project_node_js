@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('Categories', {
+    await queryInterface.createTable('Sections', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -18,16 +18,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      sectionId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Sections",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade',
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -40,6 +30,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('Categories');
+    await queryInterface.dropTable('Sections');
   }
 };

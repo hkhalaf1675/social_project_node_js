@@ -22,7 +22,7 @@ async function createAdmin() {
             lastName: 'admin',
             username: 'admin',
             email: 'admin@gmail.com',
-            phoneNumber: '011111111',
+            phoneNumber: '0111',
             isActive: true,
             password: 'admin',
             roleId:userRole[0].id,

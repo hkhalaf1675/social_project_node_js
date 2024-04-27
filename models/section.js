@@ -2,21 +2,16 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Category extends Model {
+  class Section extends Model {
     static associate(models) {
       // define association here
-      Category.hasMany(models.Post, {
-        as: 'posts',
-        foreignKey: 'categoryId'
-      });
-
-      Category.belongsTo(models.Section, {
-        as: 'section',
+      Section.hasMany(models.Category, {
+        as: 'categories',
         foreignKey: 'sectionId'
       });
     }
   }
-  Category.init({
+  Section.init({
     name: {
       type: DataTypes.STRING,
       allowNull: false
@@ -25,13 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    sectionId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    }
   }, {
     sequelize,
-    modelName: 'Category',
+    modelName: 'Section',
   });
-  return Category;
+  return Section;
 };

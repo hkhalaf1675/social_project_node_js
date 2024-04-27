@@ -10,14 +10,14 @@ router.post('/create',
     commentsMiddleware.create
 );
 
-router.put('/:id/update',
+router.put('/update/:id',
     userAuth,
     validation({comment_text: 'required'}),
     validation({id: 'required|exist:Comment'}, true),
     commentsMiddleware.update
 );
 
-router.delete('/:id/delete',
+router.delete('/delete/:id',
     userAuth,
     validation({id: 'required|exist:Comment'}, true),
     commentsMiddleware.remove

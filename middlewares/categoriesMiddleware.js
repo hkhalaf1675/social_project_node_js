@@ -1,15 +1,15 @@
-const { Op } = require("sequelize");
-const { Category } = require("../models");
+const { Op, where } = require("sequelize");
+const { Category, Section } = require("../models");
 const { pagination } = require("../services/paginationServices");
 const categoriesServices = require("../services/categoriesServices");
 
 exports.create = async(req, res) => {
-    const { name, description, section } = req.body;
-
+    let { name, description, sectionId } = req.body;
+   
     const response = await categoriesServices.create(
         name, 
         description, 
-        section
+        sectionId
     );
 
     return res.status(response.code)
@@ -21,14 +21,14 @@ exports.create = async(req, res) => {
 }
 
 exports.update = async(req, res) => {
-    const { name, description, section } = req.body;
+    let { name, description, sectionId } = req.body;
     const id = req.params.id;
 
     const response = await categoriesServices.update(
         id,
         name, 
         description, 
-        section
+        sectionId
     );
 
     return res.status(response.code)
@@ -64,17 +64,26 @@ exports.get = async(req, res) => {
             [Op.substring]: name
         };
     }
+
+    let sectionFilter = {};
     if(section){
-        filter['section'] = {
+        sectionFilter['name']= {
             [Op.substring]: section
-        };
+        }
     }
 
     const query = {
         order: [
             ['id', 'DESC']
         ],
-        where: filter
+        where: filter,
+        include: [
+            {
+                model: Section,
+                as: 'section',
+                where: sectionFilter
+            }
+        ]
     };
 
     const options = {

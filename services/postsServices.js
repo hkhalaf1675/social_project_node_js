@@ -1,4 +1,5 @@
-const { Post, User, Role } = require("../models");
+const { where } = require("sequelize");
+const { Post, User, Role, Rating } = require("../models");
 const ResponseSchema = require('../schemes/ResponseSchema');
 
 exports.create = async(title, description, image, userId, categoryId) => {
@@ -64,6 +65,54 @@ exports.remove = async(id, userId) => {
         await post.destroy();
 
         return new ResponseSchema(200, 'post deleted successfully', null);
+    } catch (error) {
+        console.log(error);
+        return new ResponseSchema(500, 'there is an error in saving data', null);
+    }
+}
+
+exports.likePost = async(postId) => {
+    try {
+        const postRate = await Rating.findOrCreate({
+            where: {
+                postId: postId
+            },
+            defaults: { postId: postId, default: true}
+        });
+
+        await Rating.update({
+            likeCount: (postRate[0].likeCount + 1)
+        }, {
+            where: {
+                id: postRate[0].id
+            }
+        });
+
+        return new ResponseSchema(200, 'post liked successfully', null);
+    } catch (error) {
+        console.log(error);
+        return new ResponseSchema(500, 'there is an error in saving data', null);
+    }
+}
+
+exports.disLikePost = async(postId) => {
+    try {
+        const postRate = await Rating.findOrCreate({
+            where: {
+                postId: postId
+            },
+            defaults: { postId: postId, default: true}
+        });
+
+        await Rating.update({
+            disLikeCount: (postRate[0].disLikeCount + 1)
+        }, {
+            where: {
+                id: postRate[0].id
+            }
+        });
+
+        return new ResponseSchema(200, 'post disliked successfully', null);
     } catch (error) {
         console.log(error);
         return new ResponseSchema(500, 'there is an error in saving data', null);
