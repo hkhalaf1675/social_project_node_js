@@ -154,8 +154,18 @@ exports.getCurrentUserPosts = async(req, res) => {
         where: filter,
         include: [
             {
+                model: User,
+                association: 'user',
+            },
+            {
                 model: Category,
-                association: 'category'
+                association: 'category',
+                include: [
+                    {
+                        model: Section,
+                        as: 'section'
+                    }
+                ]
             },
             {
                 model: Rating,
