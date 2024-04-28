@@ -89,16 +89,11 @@ exports.get = async(req, res) => {
 
     let categoryFilter = {};
     if(category){
-        categoryFilter['name']= {
-            [Op.substring]: [category]
-        }
+        categoryFilter['id']= category
     }
 
-    let sectionFilter = {};
     if(section){
-        sectionFilter['name']= {
-            [Op.substring]: section
-        }
+        categoryFilter['sectionId']= section
     }
 
     const query = {
@@ -119,8 +114,7 @@ exports.get = async(req, res) => {
                 include: [
                     {
                         model: Section,
-                        as: 'section',
-                        where: sectionFilter
+                        as: 'section'
                     }
                 ]
             },
