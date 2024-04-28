@@ -140,6 +140,7 @@ exports.get = async(req, res) => {
 }
 
 exports.getCurrentUserPosts = async(req, res) => {
+    const { page, perPage } = req.query;
     const currentUser = req.user;
     let filter = {};
     if(currentUser){
