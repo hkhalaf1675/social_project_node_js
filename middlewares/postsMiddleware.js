@@ -235,8 +235,21 @@ exports.getCurrentUserSavedPosts = async(req, res) => {
     const { page, perPage } = req.query;
     const userId = req.user.id;
 
+    const savedPosts = await SavedPost.findAll({
+        where: {
+            userId: userId
+        }
+    })
+
+    let postsIds = [];
+    for (const post of savedPosts) {
+        postsIds.push(post.postId);
+    }
+
     let filter = {};
-    filter['userId'] = userId;
+    filter['id'] = {
+        [Op.in]: postsIds
+    }
 
     const query = {
         order: [
@@ -245,22 +258,26 @@ exports.getCurrentUserSavedPosts = async(req, res) => {
         where: filter,
         include: [
             {
-                model: Post,
-                as: 'post',
+                model: User,
+                association: 'user'
+            },
+            {
+                model: Category,
+                association: 'category',
                 include: [
                     {
-                        model: Category,
-                        association: 'category'
-                    },
-                    {
-                        model: Rating,
-                        association: 'ratings'
-                    },
-                    {
-                        model: Comment,
-                        association: 'comments'
+                        model: Section,
+                        as: 'section'
                     }
                 ]
+            },
+            {
+                model: Rating,
+                association: 'ratings'
+            },
+            {
+                model: Comment,
+                association: 'comments'
             }
         ]
     };
@@ -270,7 +287,7 @@ exports.getCurrentUserSavedPosts = async(req, res) => {
         perPage
     };
 
-    const response = await pagination(SavedPost, options, query);
+    const response = await pagination(Post, options, query);
 
     return res.status(200).json(response);
 }

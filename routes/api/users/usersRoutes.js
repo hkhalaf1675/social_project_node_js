@@ -39,7 +39,6 @@ router.put('/toggle-activation/:id',
 );
 
 router.get('/',
-    adminAuth,
     validation({active: 'enum:0,1'}, false, true),
     usersMiddleware.get
 );
