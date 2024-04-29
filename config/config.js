@@ -4,13 +4,13 @@ const env = process.env.NODE_ENV || 'development';
 
 const config = {
   "development": {
-    "username": process.env.DB_USERNAME,
-    "password": process.env.DB_PASSWORD,
-    "database": process.env.DB_DATABASE,
-    "host": process.env.DB_HOST,
-    "db_port": process.env.DB_PORT??3306,
+    "username": "root",
+    "password": "",
+    "database": "social_db",
+    "host": "localhost",
+    "db_port": process.env.DB_PORT || 3306,
     "dialect": process.env.DIALECT,
-    "port_no": process.env.PORT || 8080,
+    "port_no": "8080",
     "jwt_secret_key": process.env.JWT_SECRET_KEY,
     "jwt_expiration_time": process.env.JWT_EXPIRATION_TIME
   },
@@ -19,7 +19,7 @@ const config = {
     "password": process.env.DB_PASSWORD,
     "database": process.env.DB_DATABASE,
     "host": process.env.DB_HOST,
-    "db_port": process.env.DB_PORT??3306,
+    "db_port": process.env.DB_POR || 3306,
     "dialect": process.env.DIALECT,
     "port_no": process.env.PORT || 8080,
     "jwt_secret_key": process.env.JWT_SECRET_KEY,
@@ -30,7 +30,7 @@ const config = {
     "password": process.env.DB_PASSWORD,
     "database": process.env.DB_DATABASE,
     "host": process.env.DB_HOST,
-    "db_port": process.env.DB_PORT??3306,
+    "db_port": process.env.DB_PORT || 3306,
     "dialect": process.env.DIALECT,
     "port_no": process.env.PORT || 8080,
     "jwt_secret_key": process.env.JWT_SECRET_KEY,

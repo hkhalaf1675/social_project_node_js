@@ -17,13 +17,13 @@ const pagination = async (Model,
             return { success: false, "errors": ["something went wrong"] };
         });
         rows = data.rows;
-        totalItems = data.count.length ? data.count.length : data.count ?? 0;
+        totalItems = data.count.length ? data.count.length : data.count || 0;
         totalPages = Math.ceil(totalItems / limit);
 
     }
     else if (_data) {
         rows = _data;
-        totalItems = _count ?? 0;
+        totalItems = _count || 0;
         totalPages = Math.ceil(totalItems / dataLimit);
     }
 
@@ -31,7 +31,7 @@ const pagination = async (Model,
     const pageInfo = { totalItems, totalPages, currentPage };
     const response = {};
     response['pageInfo'] = pageInfo;
-    response['data'] = rows ?? [];
+    response['data'] = rows || [];
     response['success'] = true;
     return response;
 };

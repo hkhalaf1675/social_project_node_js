@@ -9,7 +9,7 @@ async function checkAuth(roleNames, token){
     }
     
     try {
-        token = token.split(' ')[1] ?? token;
+        token = token.split(' ')[1] || token;
 
         const decoded = decode(token);
 
