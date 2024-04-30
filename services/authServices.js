@@ -63,9 +63,9 @@ exports.login = async(email, password) => {
 
         const token = await createJwtToken(user, role.name);
 
-        await user.update({
-            lastLogin: Date.now()
-        });
+        // await user.update({
+        //     lastLogin: Date.now()
+        // });
 
         user = user.toJSON();
         delete user.password;
