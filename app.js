@@ -13,6 +13,16 @@ app.use(bodyParser.json({ limit: "500mb" }));
 app.use(cors());
 app.options('*', cors());
 
+// // database connection
+// const db = require('./models/index');
+// db.sequelize.sync()
+//     .then(() => {
+//         console.log("Connect to Database Successfully");
+//     })
+//     .catch((error) => {
+//         console.log(error);
+//     });
+
 /* WEB APIs Request Layer */
 app.use('/', require("./routes_usages"));
 
